@@ -1,35 +1,38 @@
 <template>
   <div id="app" class="container">
     <div class="cell cell-map">
-      <map-container :geojson="geojson" :baseLayerSelected="baseLayerPreview" @selectedFeature="selectedFeatureCallback" ></map-container>
+      <map-container 
+        :geojson="geojson"
+        :baseLayerSelected="baseLayerPreview"
+        @selectedFeature="selectedFeatureCallback" >
+      </map-container>
     </div>
-    <div class="cell cell-geojson-url">
-      <geojson-url @urlChanged="urlChangedCallback" @baseChanged="baseurlCallback" ></geojson-url>
+    <div class="cell cell-url">
+      <url 
+        @wfsResponse="wfsResponseCallback" 
+        @baseChanged="baseurlCallback" >
+      </url>
     </div>
-    <div class="cell cell-geojson-editor">
-      <geojson-editor 
-      :geojson="geojson"
-      @change="geojson = value"></geojson-editor>
-    </div>
+
     <div class="cell cell-chart">
-      <geojson-chart :selectedFeature="selectedFeature" ></geojson-chart>
+      <chart 
+        :selectedFeature="selectedFeature" >
+      </chart>
     </div>
   </div>
 </template>
 
 <script>
   import MapContainer from './components/MapContainer'
-  import GeojsonUrl from './components/GeojsonUrl'
-  import GeojsonEditor from './components/GeojsonEditor'
-  import GeojsonChart from './components/GeojsonChart'
+  import Url from './components/Url'
+  import Chart from './components/Chart'
 
   export default {
     name: 'App',
     components: {
       MapContainer,
-      GeojsonUrl,
-      GeojsonEditor,
-      GeojsonChart
+      Url,
+      Chart
     },
     data: () => ({
       geojson: undefined,
@@ -41,7 +44,7 @@
       baseurlCallback: function(value){
         this.baseLayerPreview = value;
       },
-      urlChangedCallback: function(value){
+      wfsResponseCallback: function(value){
         this.geojson = value;
       },
       selectedFeatureCallback: function(value){
@@ -85,24 +88,20 @@
   }
 
   .cell-map {
-    grid-column: 1 / 5;
-    grid-row-start: 1;
-    grid-row-end: 12;
+    grid-column: 1 / 7;
+    grid-row: 1 / 9;
   }
 
-  .cell-geojson-url {
-    grid-column: 5 / 7;
-    grid-row: 1;
-  }
-
-  .cell-geojson-editor {
-    grid-column:  5 / 7;
-    grid-row: 2 / 7;
+  .cell-url {
+    grid-column: 6 / 9;
+    grid-row: 1 / 4;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 20px;
+    justify-self: right;
   }
 
   .cell-chart {
-    grid-column:  5 / 7;
-    grid-row: 7 / 12;
+    grid-column:  6 / 9;
+    grid-row: 4 / 9;
     justify-self: right;
   }
 
